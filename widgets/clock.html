@@ -16,7 +16,8 @@ var q=new URLSearchParams(location.search);
 if(q.get('bg'))document.body.style.background='#'+q.get('bg').replace('#','');
 if(q.get('fg'))document.body.style.color='#'+q.get('fg').replace('#','');
 var tz=q.get('tz')||undefined, h12p=q.get('h12');
-var ro=Intl.DateTimeFormat(undefined,{hour:'numeric'}).resolvedOptions();
+var loc=(navigator.languages&&navigator.languages[0])||navigator.language||'en-US';
+var ro=Intl.DateTimeFormat(loc,{hour:'numeric'}).resolvedOptions();
 var h12 = h12p!==null ? h12p!=='0'
         : (ro.hour12===true || ro.hourCycle==='h12' || ro.hourCycle==='h11');
 function tick(){
