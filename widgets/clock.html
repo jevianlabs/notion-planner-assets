@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clock</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}
+body{display:flex;align-items:center;justify-content:center;background:#FFF7F0;color:#B3261E;
+font-family:ui-sans-serif,-apple-system,"system-ui","Segoe UI Variable Display","Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-align:center;padding:16px}
+.time{font-family:ui-sans-serif,-apple-system,"system-ui","Segoe UI Variable Display","Segoe UI",Helvetica,Arial,sans-serif;font-weight:600;font-size:clamp(38px,15vw,88px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.time .ampm{font-size:.34em;font-style:italic;font-weight:500;margin-left:.18em;letter-spacing:0}
+.date{font-size:clamp(11px,3vw,14px);letter-spacing:.16em;text-transform:uppercase;opacity:.62;margin-top:12px}
+</style></head>
+<body><div><div class="time" id="t">&nbsp;</div><div class="date" id="d">&nbsp;</div></div>
+<script>
+var q=new URLSearchParams(location.search);
+if(q.get('bg'))document.body.style.background='#'+q.get('bg').replace('#','');
+if(q.get('fg'))document.body.style.color='#'+q.get('fg').replace('#','');
+var tz=q.get('tz')||undefined, h12=q.get('h12')!=='0';
+function tick(){
+  var n=new Date();
+  var o={hour:'numeric',minute:'2-digit',hour12:h12}; if(tz)o.timeZone=tz;
+  var s=n.toLocaleTimeString('en-US',o);
+  var m=s.match(/\s?(AM|PM)$/i);
+  document.getElementById('t').innerHTML = m
+    ? s.replace(/\s?(AM|PM)$/i,'')+'<span class="ampm">'+m[1].toLowerCase()+'</span>'
+    : s;
+  var od={weekday:'long',month:'long',day:'numeric'}; if(tz)od.timeZone=tz;
+  document.getElementById('d').textContent=n.toLocaleDateString('en-US',od);
+}
+tick();setInterval(tick,1000);
+</script></body></html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Year progress</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}
+body{display:flex;align-items:center;justify-content:center;background:#FFF7F0;color:#B3261E;
+font-family:ui-sans-serif,-apple-system,"system-ui","Segoe UI Variable Display","Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;padding:20px}
+.w{width:100%;max-width:560px;text-align:center}
+.top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.yr{font-family:"Lyon-Text",Georgia,ui-serif,serif;font-style:italic;font-weight:500;font-size:clamp(15px,3.4vw,20px)}
+.pc{font-family:ui-sans-serif,-apple-system,"system-ui","Segoe UI Variable Display","Segoe UI",Helvetica,Arial,sans-serif;font-weight:600;font-size:clamp(22px,6vw,38px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:99px;background:rgba(179,38,30,.13);overflow:hidden}
+.fill{height:100%;border-radius:99px;background:currentColor;width:0;transition:width .9s ease}
+.l{font-size:clamp(10px,2.6vw,12px);letter-spacing:.16em;text-transform:uppercase;opacity:.55;margin-top:12px}
+</style></head>
+<body><div class="w">
+<div class="top"><span class="yr" id="yr"></span><span class="pc" id="pc"></span></div>
+<div class="bar"><div class="fill" id="f"></div></div>
+<div class="l" id="l"></div>
+</div>
+<script>
+var q=new URLSearchParams(location.search);
+if(q.get('bg'))document.body.style.background='#'+q.get('bg').replace('#','');
+if(q.get('fg'))document.body.style.color='#'+q.get('fg').replace('#','');
+var n=new Date(), y=n.getFullYear();
+var s=new Date(y,0,1), e=new Date(y+1,0,1);
+var pct=(n-s)/(e-s);
+var today=new Date(y,n.getMonth(),n.getDate());
+var left=Math.round((e-today)/86400000);
+document.getElementById('yr').textContent=y;
+document.getElementById('pc').textContent=Math.floor(pct*100)+'%';
+document.getElementById('l').textContent=left+(left===1?' day left':' days left');
+setTimeout(function(){document.getElementById('f').style.width=(pct*100)+'%'},80);
+</script></body></html>
